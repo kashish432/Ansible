@@ -1,0 +1,13 @@
+---
+- name: Change file permissions and owners on node VM
+  hosts:
+    - 34.30.255.55  # Replace with your node VM's IP address
+  become: true  # Run tasks with sudo privileges
+
+
+  tasks:
+    - name: Change file permissions
+      file:
+        path: /home/kashkul8/kash/file.txt  # Replace with the path to your file
+        owner: user1  # Replace with the new owner of the file
+        mode: "0777"  # Replace with the desired permissions of the file
