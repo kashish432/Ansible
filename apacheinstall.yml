@@ -1,0 +1,28 @@
+---
+- name: Install apache on node VM
+  hosts:
+    - 34.30.255.55
+  become: true
+  tasks:
+    - name: Add Apache repository
+      apt_repository:
+        repo: "deb http://deb.debian.org/debian buster main"
+        state: present
+
+
+    - name: Import Apache GPG key
+      apt_key:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        state: present
+
+
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+
+
+    - name: Install Apache package
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
