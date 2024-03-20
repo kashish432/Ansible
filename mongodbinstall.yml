@@ -1,0 +1,64 @@
+---
+- name: Install MongoDB on node VM
+  hosts:
+    - 34.30.255.55
+  become: true
+  vars:
+    mongodb_version: "5.0.24"
+  tasks:
+
+
+    - name: Install prerequisites
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - gnupg
+        state: present
+        update_cache: true
+
+
+    - name: Import MongoDB GPG Key
+      apt_key:
+        url: "https://www.mongodb.org/static/pgp/server-5.0.asc"
+        state: present
+
+
+    - name: Add MongoDB repository
+      apt_repository:
+        repo: "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/debian buster/mongodb-org/5.0 main | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list"
+        state: present
+        update_cache: true
+
+
+    - name: Install MongoDB
+      apt:
+        name: mongodb-org
+        state: latest
+        update_cache: yes
+      notify:
+        - start mongodb
+
+
+    - name: Create MongoDB data directory
+      file:
+        path: /data/db
+        state: directory
+        owner: mongodb
+        group: mongodb
+        mode: '0755'
+
+
+    - name: Start MongoDB service
+      systemd:
+        name: mongod
+        state: started
+        enabled: yes
+
+
+  handlers:
+    - name: start mongodb
+      service:
+        name: mongod
+        state: started
+        enabled: yes
