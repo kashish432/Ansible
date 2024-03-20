@@ -1,0 +1,56 @@
+---
+- name: Install HAProxy on node VM
+  hosts:
+    - 34.30.255.55
+  become: yes
+  vars:
+    haproxy_version: "2.6.1"
+
+
+  tasks:
+
+
+    - name: Install required packages
+      apt:
+        name:
+          - software-properties-common
+          - gnupg2
+        state: present
+        update_cache: true
+
+
+    - name: Add HAProxy repository key
+      apt_key:
+        url: "https://haproxy.debian.net/bernat.debian.org.gpg"
+        state: present
+
+
+    - name: Add HAProxy repository
+      apt_repository:
+        repo: "deb http://deb.debian.org/debian buster-backports main"
+        state: present
+        update_cache: true
+
+
+    - name: Install HAProxy
+      apt:
+        name: haproxy
+        state: present
+        update_cache: true
+
+
+    - name: Enable and start HAProxy service
+      systemd:
+        name: haproxy
+        enabled: yes
+        state: started
+
+
+  handlers:
+
+
+    - name: restart haproxy
+      systemd:
+        name: haproxy
+        state: restarted
+
