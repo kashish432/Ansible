@@ -1,0 +1,19 @@
+#pre-requisite: installing required modules 
+#pip install google-auth google-auth-library
+#pip install google-cloud-storage
+#ansible-galaxy collection install community.general
+#ansible-galaxy collection install community.general
+#ansible-galaxy collection install google.cloud
+---
+- name: Create GCS Bucket
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: Create GCS Bucket
+      google.cloud.gcp_storage_bucket:
+        name: bucket-giit-kashish-enterprise
+        project: giit-interns
+        auth_kind: serviceaccount
+        service_account_file: /etc/ansible/playbooks/servicefile.json
+        state: present
