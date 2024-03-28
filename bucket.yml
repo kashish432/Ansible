@@ -15,5 +15,5 @@
         name: bucket-giit-kashish-enterprise
         project: giit-interns
         auth_kind: serviceaccount
-        service_account_file: /etc/ansible/playbooks/servicefile.json
+        service_account_file: <path of service account>
         state: present
