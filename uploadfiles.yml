@@ -1,0 +1,15 @@
+---
+- name: Upload file to GCS Bucket
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: Upload file to GCS Bucket
+      google.cloud.gcp_storage_object:
+        bucket: bucket-giit-kashish-enterprise  # Specify the bucket name
+        src: /etc/ansible/playbooks/kash.txt           # Path to the local file to upload
+        dest: hello/file1.txt            # Destination path in the bucket
+        project: giit-interns                    # Specify your GCP project ID
+        auth_kind: serviceaccount
+        service_account_file: /etc/ansible/playbooks/servicefile.json
+        #  state: present                           # Use 'present' to ensure the file exists in the bucket
