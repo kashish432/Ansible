@@ -1,0 +1,21 @@
+---
+- name: Set IAM permissions for gcp bucket 
+  hosts: localhost
+  gather_facts: no
+
+  vars:
+    bucket_name: bucket-giit-kashish-enterprise
+    role: READER
+    entity: user-kashkul8@gmail.com
+
+
+  tasks:
+    - name: setiing permissions for gcp bucket 
+      google.cloud.gcp_storage_bucket_access_control:
+        bucket:
+          name: "{{ bucket_name }}"
+        role: "{{ role }}"
+        entity: "{{ entity }}"
+        project: giit-interns                    # Specify your GCP project ID
+        auth_kind: serviceaccount
+        service_account_file: /etc/ansible/playbooks/servicefile.json
