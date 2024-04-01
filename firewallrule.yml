@@ -1,0 +1,37 @@
+---
+- name: Create Firewall Rule in Google Cloud VPC
+  hosts: localhost
+
+  gather_facts: no
+  vars:
+    project_id: "giit-interns"
+    auth_kind: serviceaccount
+    service_account_file: path to service account key
+    network: 
+      name: "default"
+      network: "global/networks/default"
+    rule_name: "allow-ssh"  # Change this to your desired rule name
+    direction: "INGRESS"  # Change this to INGRESS or EGRESS depending on your requirements
+    priority: 1000  # Change this to your desired priority
+    protocol: "tcp"  # Change this to your desired protocol
+    ports: ["22"]  # Change this to your desired ports, e.g., ["80", "443"] for HTTP and HTTPS
+    source_ranges: ["0.0.0.0/0"]  # Change this to your desired source IP ranges
+  tasks:
+    - name: Create Firewall Rule
+      gcp_compute_firewall:
+        project: "{{ project_id }}"
+        auth_kind: "{{ auth_kind }}"
+        service_account_file: "{{ service_account_file }}"
+        name: "{{ rule_name }}"
+        network: "{{ network }}"
+        direction: "{{ direction }}"
+        priority: "{{ priority }}"
+        allowed:
+          - ip_protocol: "{{ protocol }}"
+            ports: "{{ ports }}"
+        source_ranges: "{{ source_ranges }}"
+      register: firewall_rule
+
+    - name: Print Firewall Rule details
+      debug:
+        var: firewall_rule
