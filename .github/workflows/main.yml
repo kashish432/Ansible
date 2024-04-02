@@ -22,7 +22,7 @@ jobs:
       run: pip install ansible
 
     - name: Execute playbook
-      run: ansible-playbook dockerinstall.yml
+      run: ansible-playbook -i inventory.yml dockerinstall.yml
       env:
         ANSIBLE_HOST_KEY_CHECKING: "False"
         # Add any other environment variables needed for your playbook
