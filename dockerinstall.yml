@@ -1,7 +1,7 @@
 ---
 - name: Install Docker
   hosts:
-    - 34.30.255.55
+    - 34.68.246.40
   become: true
   tasks:
     - name: Install prerequisites for Docker
