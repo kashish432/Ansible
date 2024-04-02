@@ -1,0 +1,28 @@
+name: Run Ansible Playbooks
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ansible:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: pip install ansible
+
+    - name: Execute playbook
+      run: ansible-playbook dockerinstall.yml
+      env:
+        ANSIBLE_HOST_KEY_CHECKING: "False"
+        # Add any other environment variables needed for your playbook
