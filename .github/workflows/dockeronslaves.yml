@@ -1,0 +1,23 @@
+name: Install Docker on Slaves
+
+on:
+  push:
+    branches:
+      - main  # Adjust the branch name as needed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # Use the appropriate operating system
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Ansible
+      run: sudo apt update && sudo apt install ansible -y
+
+    - name: Run Ansible playbook
+      run: ansible-playbook -i inventory.ini install_docker.yml
+      env:
+        ANSIBLE_HOST_KEY_CHECKING: false
+      # Replace `inventory.ini` with your Ansible inventory file
